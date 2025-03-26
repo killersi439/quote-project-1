@@ -1,4 +1,8 @@
-p{
-    color: red;
-    background-color: aquamarine;
+html{
+    box-sizing: border-box; 
+}
+body{
+    margin:0;
+    min-height: 100vh;
+    background-image:url(./quote\ images/circuit-board.svg);
 }
