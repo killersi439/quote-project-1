@@ -15,18 +15,18 @@ const newQuoteBtn = document.getElementById("new-quote");
   //});
 
 
-//let apiQuotes = [];
- // Get Quote From API
-// async function getQuote() {
- // const apiUrl = "https://type.fit/api/quotes";
-  //try {
-  //const response = await fetch( apiUrl);
-    //const data = await response.json();
-    //console.log(apiQuotes);
-    //} catch (error) {
-    // Catch Error Here
-    //}
-    //}
+/let apiQuotes = [];
+  Get Quote From API
+ async function getQuote() {
+ const apiUrl = "https://type.fit/api/quotes";
+  try {
+  const response = await fetch( apiUrl);
+    const data = await response.json();
+    console.log(apiQuotes);
+    } catch (error) {
+     Catch Error Here
+    }
+    }
 
     // On Load
   //  getQuote();
