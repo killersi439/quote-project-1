@@ -6,13 +6,13 @@ const twitterBtn = document.getElementById("twitter");
 const newQuoteBtn = document.getElementById("new-quote");
 
  //Get Quote From API
-//fetch("https://type.fit/api/quotes")
- // .then(function(response) {
-  //  return response.json();
-  //})
-  //.then(function(data) {
-  //  console.log(data);
-  //});
+fetch("https://type.fit/api/quotes")
+ /.then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    console.log(data);
+  });
 
 
 /let apiQuotes = [];
