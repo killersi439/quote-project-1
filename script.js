@@ -1,41 +1,69 @@
-// giving the variables the value of the elements in the html file
+const quoteContainer = document.getElementById('quote-container');
+const quoteText = document.getElementById('quote');
+const authorText = document.getElementById('author');
+const twitterBtn = document.getElementById('twitter');
+const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader');
 
+let apiQuotes = [];
 
-    // On Load
-  //  getQuote();
-  document.addEventListener("DOMContentLoaded", () => {
-    const quoteContainer = document.getElementById('quote');
-    const authorContainer = document.getElementById('author');
-    const newQuoteButton = document.getElementById('new-quote');
-    const twitterButton = document.getElementById('twitter');
+// Loading Spinner Shown
+function loading() {
+  loader.hidden = false;
+  quoteContainer.hidden = true;
+}
 
-    const apiUrl = 'https://api.quotable.io/random'; // Using Quotable API as an example
+// Remove Loading Spinner
+function complete() {
+  quoteContainer.hidden = false;
+  loader.hidden = true;
+}
 
-    async function getQuote() {
-        try {
-            const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error('Failed to fetch quote.');
-            
-            const data = await response.json();
-            quoteContainer.textContent = data.content;
-            authorContainer.textContent = data.author || "Unknown";
-        } catch (error) {
-            quoteContainer.textContent = 'An error occurred while fetching the quote. Please try again later.';
-            authorContainer.textContent = '';
-            console.error('Error:', error);
-        }
-    }
+// Show New Quote
+function newQuote() {
+  loading();
+  // Pick a random quote from array
+  const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
+  // Check if Author field is blank and replace it with 'Unknown'
+  if (!quote.author) {
+    authorText.textContent = 'Unknown';
+  } else {
+    authorText.textContent = quote.author;
+  }
+  // Check Quote length to determine styling
+  if (quote.text.length > 120) {
+    quoteText.classList.add('long-quote');
+  } else {
+    quoteText.classList.remove('long-quote');
+  }
+  // Set Quote, Hide Loader
+  quoteText.textContent = quote.text;
+  complete();
+}
 
-    function tweetQuote() {
-        const quote = quoteContainer.textContent;
-        const author = authorContainer.textContent;
-        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${quote}" - ${author}`)}`;
-        window.open(twitterUrl, '_blank');
-    }
+// Get Quotes From API
+async function getQuotes() {
+  loading();
+  const apiUrl = 'https://type.fit/api/quotes';
+  try {
+    const response = await fetch(apiUrl);
+    apiQuotes = await response.json();
+    newQuote();
+  } catch (error) {
+    // Catch Error Here
+    console.error('Error fetching quotes:', error);
+  }
+}
 
-    newQuoteButton.addEventListener('click', getQuote);
-    twitterButton.addEventListener('click', tweetQuote);
+// Tweet Quote
+function tweetQuote() {
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${quoteText.innerText} - ${authorText.innerText}`;
+  window.open(twitterUrl, '_blank');
+}
 
-    // Fetch a quote when the page loads
-    getQuote();
-});
+// Event Listeners
+newQuoteBtn.addEventListener('click', newQuote);
+twitterBtn.addEventListener('click', tweetQuote);
+
+// On Load
+getQuotes();
